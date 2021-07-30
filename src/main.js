@@ -1,46 +1,37 @@
-import {createTripInfoTemplate} from './view/trip-info.js';
 import {createMenuTemplate} from './view/menu.js';
+import {createInfoTemplate} from './view/trip-info.js';
+import {createTripCostTemplate} from './view/trip-cost.js';
 import {createFiltersTemplate} from './view/filters.js';
-import {createPointTemplate} from './view/point.js';
-import {createAddNewPointTemlate} from './view/add-new-point.js';
-import {createSortTemplate} from './view/sort.js';
-import {createLoadingTemplate} from './view/loading.js';
-import {createEmptyTemplate} from './view/list-empty.js';
+import {createTripSortingTemplate} from './view/sorting.js';
+import {createPointListTemplate} from './view/point-list.js';
+import {createFormCreateTemplate} from './view/form-create.js';
+import {createFormEditTemplate} from './view/form-edit.js';
 
 const POINT_COUNT = 3;
-const isLoading = false;
+
+const tripMainElement = document.querySelector('.trip-main');
+const tripControlsNaElement = tripMainElement.querySelector('.trip-controls__navigation');
+const tripControlsFiltersElement = tripMainElement.querySelector('.trip-controls__filters');
+const tripEventsElement = document.querySelector('.trip-events');
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const siteMainElement = document.querySelector('.trip-events');
-const siteHeadingElement = document.querySelector('.trip-main');
-const siteTabsNavigationElement = siteHeadingElement.querySelector('.trip-controls__navigation');
-const siteFiltersElement = siteHeadingElement.querySelector('.trip-controls__filters');
+render(tripMainElement, createInfoTemplate(), 'afterbegin');
+render(tripControlsNaElement, createMenuTemplate(), 'beforeend');
+render(tripControlsFiltersElement, createFiltersTemplate(), 'beforeend');
 
-render(siteTabsNavigationElement, createMenuTemplate(), 'beforeend');
-render(siteFiltersElement, createFiltersTemplate(), 'beforeend');
+const tripInfoElement = tripMainElement.querySelector('.trip-info');
+render(tripInfoElement, createTripCostTemplate(), 'beforeend');
 
-if (isLoading) {
-  render(siteMainElement, createLoadingTemplate(), 'beforeend');
-} else {
-  const siteEventsListElement = document.createElement('ul');
-  siteEventsListElement.classList.add('trip-events__list');
-  siteMainElement.insertAdjacentElement('beforeend', siteEventsListElement);
+render(tripEventsElement, createTripSortingTemplate(), 'afterbegin');
+render(tripEventsElement, createFormCreateTemplate(), 'afterbegin');
 
-  if (POINT_COUNT !== 0) {
-    render(siteHeadingElement, createTripInfoTemplate(), 'afterbegin');
-    render(siteEventsListElement, createSortTemplate(), 'beforebegin');
-
-    for (let i = 0; i < POINT_COUNT; i++) {
-      if (i === 0) {
-        render(siteEventsListElement, createAddNewPointTemlate(), 'beforeend');
-      } else {
-        render(siteEventsListElement, createPointTemplate(), 'beforeend');
-      }
-    }
-  } else {
-    render(siteMainElement, createEmptyTemplate(), 'beforeend');
-  }
+for (let i = 0; i < POINT_COUNT; i++) {
+  render(tripEventsElement, createPointListTemplate(), 'beforeend');
 }
+
+
+const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
+render(tripEventsListElement, createFormEditTemplate(), 'afterbegin');
