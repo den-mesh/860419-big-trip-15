@@ -1,14 +1,20 @@
+import {getRandomInteger} from './utils.js';
 import {createMenuTemplate} from './view/menu.js';
 import {createInfoTemplate} from './view/trip-info.js';
 import {createTripCostTemplate} from './view/trip-cost.js';
 import {createFiltersTemplate} from './view/filters.js';
 import {createTripSortingTemplate} from './view/sorting.js';
-import {createMessageFormTemplate} from './view/message-form-create.js';
+import {createNoPointsMessageTemplate} from './view/no-point-message.js';
 import {createPointViewTemplate} from './view/point-edit';
 import {createPointTemplate} from './view/point.js';
+import {generatePoint} from './mock/point.js';
 import {createAddNewPointTemplate} from './view/add-new-point.js';
 
-const POINT_COUNT = 3;
+
+const pointsCount = getRandomInteger(15, 20);
+
+const points = new Array(pointsCount).fill().map(generatePoint);
+
 
 const RenderPlace = {
   BEFORE_END: 'beforeend',
@@ -32,9 +38,17 @@ render(controlsFiltersElement, createFiltersTemplate());
 render(eventsElement, createTripSortingTemplate());
 render(eventsElement, createPointViewTemplate());
 
-for (let i = 0; i < POINT_COUNT; i++) {
-  render(eventsElement, createPointTemplate());
+
+// for (let i = 0; i < points.length; i++) {
+//   render(eventsElement, createPointTemplate(points[i]));
+//   console.log(points[i]);
+// }
+
+for (const point of points) {
+  render(eventsElement, createPointTemplate(point));
+  console.log(point);
 }
 
-render(eventsElement, createMessageFormTemplate());
+
+render(eventsElement, createNoPointsMessageTemplate());
 render(eventsElement, createAddNewPointTemplate());

@@ -1,3 +1,1 @@
-export const createNoPointsMessageTemplate = () => (
-  '<p class="trip-events__msg">Click New Event to create your first point</p>'
-);
+export const createNoPointsMessageTemplate = () => '<p class="trip-events__msg">Click New Event to create your first point</p>';
